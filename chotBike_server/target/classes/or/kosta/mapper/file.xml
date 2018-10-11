@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="file">
+	<insert id="add" parameterType="fvo">
+		insert into cresp (num, uname, content, path)
+			values (cresp_seq.nextval, #{uname, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, #{path, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="view" resultType="fvo" parameterType="fvo">
+		select * from cresp order by 1 desc
+	</select>
+	
+</mapper>

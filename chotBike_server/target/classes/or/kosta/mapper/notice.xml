@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="notice">
+
+	<insert id="insert" parameterType="noticeVO">
+		INSERT INTO notice
+			VALUES (notice_num_seq.nextval, #{reboard_num, jdbcType=VARCHAR}, 
+				#{comment_num, jdbcType=VARCHAR}, #{user_id, jdbcType=VARCHAR},
+				#{notice_title, jdbcType=VARCHAR}, #{notice_content, jdbcType=VARCHAR}, 
+				sysdate, #{notice_identify, jdbcType=VARCHAR},
+				#{notice_re_count, jdbcType=VARCHAR}, #{notice_hits, jdbcType=VARCHAR},
+				#{field1, jdbcType=VARCHAR}, #{field2, jdbcType=VARCHAR},
+				#{field3, jdbcType=VARCHAR}, #{notice_coment_yn, jdbcType=VARCHAR},
+				#{notice_picture_yn, jdbcType=VARCHAR}, #{notice_delete_yn, jdbcType=VARCHAR}
+				)
+	</insert>
+	
+	<select id="select" parameterType="noticeVO" resultType="noticeVO">
+		SELECT * FROM (
+		SELECT rank() over(order by notice_num desc) rnum,
+		notice_num, user_id, notice_title, notice_enter_date, notice_hits
+			FROM notice
+			)
+			WHERE rnum BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="selectCnt" parameterType="noticeVO" resultType="java.lang.Integer">
+		select count(*) as notice_num from notice
+	</select>
+	
+	<select id="selectNew" parameterType="noticeVO" resultType="noticeVO">
+		SELECT * FROM (
+			SELECT * FROM notice 
+			ORDER BY notice_num DESC
+			)
+		WHERE notice_num <![CDATA[ 
+			<=
+		]]> 
+		3
+	</select>
+	
+	<select id="selectView" parameterType="noticeVO" resultType="noticeVO">
+		SELECT notice_title, notice_enter_date, notice_hits, user_id, notice_content
+		FROM notice
+		WHERE notice_num = #{notice_num}
+	</select>
+</mapper>

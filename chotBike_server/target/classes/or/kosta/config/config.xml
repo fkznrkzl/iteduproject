@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	<typeAliases>
+		<typeAlias type="or.kosta.vo.CBoardVO" alias="fvo" />
+		<typeAlias type="or.kosta.vo.BikeUserVO" alias="buvo" />
+		<typeAlias type="or.kosta.vo.BikeCommunityVO" alias="bcvo" />
+		<typeAlias type="or.kosta.dto.BikeUserLoginDTO" alias="budto" />
+		<typeAlias type="or.kosta.vo.NoticeVO" alias="noticeVO" />
+		<typeAlias type="or.kosta.dto.NoticeDTO" alias="noticeDTO" />
+	</typeAliases>
+</configuration>

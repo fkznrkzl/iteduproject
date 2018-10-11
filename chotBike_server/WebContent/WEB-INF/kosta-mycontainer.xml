@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+  http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<context:component-scan base-package="or.kosta.mvc" />
+	<mvc:annotation-driven />
+	<mvc:resources location="/resources/" mapping="/resources/**" />
+
+	<!-- 로그인 체크 bean -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/chotrider/board_list" />
+			<bean class="or.kosta.Interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/chotrider/userlog" />
+			<bean class="or.kosta.Interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/chotrider/notice" />
+			<bean class="or.kosta.Interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/chotrider/history" />
+			<bean class="or.kosta.Interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/myora"></property>
+	</bean>
+
+	<!-- MyBatis config,mapper setting -->
+	<bean id="factoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:or/kosta/config/config.xml" />
+		<property name="mapperLocations" value="classpath*:or/kosta/mapper/*.xml" />
+	</bean>
+	<!-- Mybatis Template configure -->
+	<bean id="ss" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="factoryBean" />
+	</bean>
+
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
+		<property name="order" value="1" />
+	</bean>
+
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles/tiles-layout.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/jsp/" />
+		<property name="suffix" value="" />
+		<property name="contentType" value="text/html; charset=UTF-8"></property>
+	</bean>
+
+	<!-- 이미지 경로 매핑 -->
+	<mvc:resources location="/WEB-INF/img/" mapping="/img/**"
+		cache-period="0" />
+	<!-- 이미지 경로 매핑 -->
+	<mvc:resources location="/WEB-INF/img_team/" mapping="/img_team/**"
+		cache-period="0" />
+	<!-- 이미지 경로 매핑 -->
+	<mvc:resources location="/WEB-INF/img_userlog/" mapping="/img_userlog/**"
+		cache-period="0" />
+	<!-- css 매핑 -->
+	<mvc:resources location="/WEB-INF/css/" mapping="/css/**"
+		cache-period="0" />
+
+</beans>

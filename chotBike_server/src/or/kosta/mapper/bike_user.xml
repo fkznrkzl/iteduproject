@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="bike_user">
+	
+	<select id="loginCheck" resultType="String" parameterType="budto">
+		SELECT user_id, user_pwd FROM bike_user where user_id = #{user_id} and user_pwd = #{user_pwd}
+	</select>
+	
+	<select id="viewMember" resultType="or.kosta.dto.BikeUserLoginDTO" parameterType="budto">
+		SELECT user_id, user_pwd
+			FROM bike_user 
+			WHERE user_id = #{user_id} AND user_pwd = #{user_pwd}
+	</select>
+	
+	<insert id="add" parameterType="buvo">
+		insert into bike_user
+			values (user_num.nextval, bike_num.nextval, #{user_id, jdbcType=VARCHAR}, 
+					#{user_pwd, jdbcType=VARCHAR}, #{user_name, jdbcType=VARCHAR}, 
+					#{user_height, jdbcType=VARCHAR}, #{user_weight, jdbcType=VARCHAR},
+					#{user_birth, jdbcType=VARCHAR}, sysdate, #{user_bike_buy_date, jdbcType=VARCHAR})
+	</insert>
+</mapper>
